@@ -40,14 +40,17 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const database_1 = require("./config/database");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const swagger_config_1 = __importDefault(require("./utils/swagger.config"));
 dotenv.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use("/auth", auth_routes_1.default);
+app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_config_1.default));
 database_1.AppDataSource.initialize()
     .then(() => {
     app.listen(3000, () => console.log("Server running on port 3000"));
